@@ -1,5 +1,5 @@
 const Sequelize = require('sequelize');
-// const mongoose = require('mongoose');
+const mongoose = require('mongoose');
 
 const databaseConfig = require('../config/database');
 
@@ -13,7 +13,7 @@ const models = [Student, Teacher, Question, Avatar];
 class Database {
   constructor() {
     this.init();
-    // this.mongo();
+    this.mongo();
   }
 
   init() {
@@ -26,13 +26,13 @@ class Database {
       );
   }
 
-  // mongo() {
-  //   this.mongoConnection = mongoose.connect(process.env.MONGO_URL, {
-  //     useNewUrlParser: true,
-  //     useFindAndModify: true,
-  //     useUnifiedTopology: true,
-  //   });
-  // }
+  mongo() {
+    this.mongoConnection = mongoose.connect('mongodb+srv://luiz:LuizTCC@aprenderbrincando.hsxqm.mongodb.net/AprenderBrincando?retryWrites=true&w=majority', {
+      useNewUrlParser: true,
+      useFindAndModify: true,
+      useUnifiedTopology: true,
+    });
+  }
 }
 
 module.exports = new Database();

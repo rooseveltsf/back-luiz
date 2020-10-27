@@ -1,9 +1,11 @@
 const jwt = require('jsonwebtoken');
 
-const authConfig = require('../../config/auth');
-
 const Student = require('../models/Student');
 const Teacher = require('../models/Teacher');
+const Avatar = require('../models/Avatar');
+const Score = require('../schemas/Score');
+
+const authConfig = require('../../config/auth');
 
 class AuthController {
   async teacherLogin(req, res) {
@@ -23,12 +25,13 @@ class AuthController {
       return res.status(400).json({ error: 'Professor incorreta'});
     }
 
-    const { id, name } = teacher;
+    const { id, name, subject } = teacher;
 
     return res.json({
-      teacher: {
+      user: {
         id,
-        name
+        name,
+        subject
       },
       token: jwt.sign({ id }, authConfig.secret),
     });
@@ -40,7 +43,14 @@ class AuthController {
     const student = await Student.findOne({
       where: {
         email,
-      }
+      },
+      include: [
+        {
+          model: Avatar,
+          as: 'avatar',
+          attributes: ['path', 'url'],
+        },
+      ],
     })
 
     if(!student) {
@@ -51,12 +61,20 @@ class AuthController {
       return res.status(400).json({ error: 'Senha do aluno incorreta'});
     }
 
-    const { id, name } = student;
+    const { id, name, avatar } = student;
+
+    const { _id } = await Score.findOne({
+      'user_id' : id
+    })
+
+    console.log(_id);
 
     return res.json({
-      student: {
+      user: {
         id,
-        name
+        name,
+        score_id: _id,
+        avatar
       },
       token: jwt.sign({ id }, authConfig.secret),
     });

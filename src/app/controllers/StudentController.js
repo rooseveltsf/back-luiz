@@ -1,5 +1,6 @@
 const Yup = require('yup');
 const Student = require('../models/Student');
+const Score = require('../schemas/Score');
 
 class StudentController {
   async store(req, res) {
@@ -14,9 +15,15 @@ class StudentController {
       return res.status(400).json({ error: 'Erro de validação do formulário' });
     }
 
-    const student = await Student.create(req.body);
+    const { id, name } = await Student.create(req.body);
 
-    return res.json(student);
+    await Score.create({
+      user_id: id,
+      name,
+      score: 0,
+    })
+
+    return res.send();
   }
 }
 
