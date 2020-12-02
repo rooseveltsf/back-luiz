@@ -14,8 +14,6 @@ class QuestionController{
       order: [['created_at', 'DESC']],
     });
 
-    console.log(questions)
-
     return res.json(questions);
   }
 

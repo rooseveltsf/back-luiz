@@ -9,7 +9,7 @@ class Avatar extends Sequelize.Model {
         url: {
           type: Sequelize.VIRTUAL,
           get() {
-            return `http://192.168.0.120:3333/avatar/${this.path}`;
+            return `http://10.0.0.224:3333/avatar/${this.path}`;
           },
         },
       },

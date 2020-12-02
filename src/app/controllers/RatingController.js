@@ -37,10 +37,6 @@ class RatingController {
       { teacher_id: id },
       { rating: ratings }
     );
-    
-    const media = ratings
-      .reduce((soma, nota) => soma + nota, 0) / ratings.length
-      .toFixed(1);
       
     return res.send();
   }
